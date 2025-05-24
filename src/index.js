@@ -56,3 +56,11 @@ document.querySelectorAll('.skill-card').forEach(card => {
         this.style.transform = 'translateY(0) scale(1)';
     });
 });
+
+// Discord Copy Funktion
+function copyDiscord() {
+    const discordName = "1st | Firstmine";
+    navigator.clipboard.writeText(discordName).then(() => {
+        alert("Discord-Name \"" + discordName + "\" wurde kopiert!");
+    });
+}
