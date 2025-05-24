@@ -405,3 +405,43 @@ nav {
     z-index: 1001;
     transition: width 0.3s ease;
 }
+
+/* Footer */
+footer {
+    background: rgba(0, 70, 67, 0.95);
+    color: var(--paragraph);
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 0.95rem;
+    border-top: 1px solid rgba(171, 209, 198, 0.2);
+    position: relative;
+    z-index: 999;
+}
+
+footer a {
+    color: var(--highlight);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: var(--paragraph);
+}
+
+.footer-links {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-links a {
+    font-weight: bold;
+}
+
+.footer-note {
+    opacity: 0.8;
+}
+
+
