@@ -48,11 +48,11 @@ window.addEventListener('scroll', () => {
 
 // Add some interactive hover effects
 document.querySelectorAll('.skill-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
+    card.addEventListener('mouseenter', function () {
         this.style.transform = 'translateY(-10px) scale(1.02)';
     });
 
-    card.addEventListener('mouseleave', function() {
+    card.addEventListener('mouseleave', function () {
         this.style.transform = 'translateY(0) scale(1)';
     });
 });
@@ -69,3 +69,16 @@ function copyDiscord() {
         }, 2500);
     });
 }
+
+//animation on mouseclick
+document.addEventListener("click", function (e) {
+    const ripple = document.createElement("div");
+    ripple.className = "click-ripple";
+    ripple.style.left = `${e.clientX}px`;
+    ripple.style.top = `${e.clientY}px`;
+    document.body.appendChild(ripple);
+
+    setTimeout(() => {
+        ripple.remove();
+    }, 400);
+});

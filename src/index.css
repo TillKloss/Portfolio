@@ -472,5 +472,26 @@ footer .container {
     opacity: 0.75;
 }
 
+/* Mouse Click */
+
+.click-ripple {
+    position: fixed;
+    width: 15px;
+    height: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple-effect 0.4s ease-out;
+    pointer-events: none;
+    z-index: 9999;
+    will-change: transform, opacity;
+}
+
+@keyframes ripple-effect {
+    to {
+        transform: translate(-50%, -50%) scale(3);
+        opacity: 0;
+    }
+}
 
 
