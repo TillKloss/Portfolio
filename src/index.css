@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 :root {
     --bg: #004643;
     --headline: #fffffe;
@@ -308,6 +307,29 @@ nav {
     transform: translateY(-2px);
 }
 
+.copy-toast {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--bg);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-size: 0.95rem;
+    opacity: 0;
+    transition: opacity 0.3s ease, bottom 0.3s ease;
+    z-index: 1000;
+}
+
+.copy-toast.show {
+    display: block;
+    opacity: 1;
+    bottom: 40px;
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {
@@ -408,40 +430,47 @@ nav {
 
 /* Footer */
 footer {
-    background: rgba(0, 70, 67, 0.95);
+    background: var(--bg, rgba(0, 70, 67, 0.95));
     color: var(--paragraph);
     padding: 40px 20px;
     text-align: center;
     font-size: 0.95rem;
-    border-top: 1px solid rgba(171, 209, 198, 0.2);
+    border-top: 1px solid var(--bg, rgba(171, 209, 198, 0.2));
     position: relative;
     z-index: 999;
 }
 
-footer a {
+footer .container {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.footer-nav {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-nav a {
     color: var(--highlight);
     text-decoration: none;
     transition: color 0.3s ease;
+    font-weight: 500;
 }
 
-footer a:hover {
+.footer-nav a:hover {
     color: var(--paragraph);
 }
 
-.footer-links {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.footer-links a {
-    font-weight: bold;
-}
-
 .footer-note {
-    opacity: 0.8;
+    font-size: 0.85rem;
+    opacity: 0.75;
 }
+
 
 

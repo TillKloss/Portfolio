@@ -1,4 +1,4 @@
-// Smooth scrolling for navigation links
+//scrolls to the clicked section
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -12,13 +12,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Scroll indicator
+//scroll view over header
 window.addEventListener('scroll', () => {
     const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
     document.querySelector('.scroll-indicator').style.width = scrolled + '%';
 });
 
-// Fade in animations
+//fade in animations
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -36,7 +36,7 @@ document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
 });
 
-// Header background on scroll
+//header changes background while scrolling
 window.addEventListener('scroll', () => {
     const header = document.querySelector('header');
     if (window.scrollY > 100) {
@@ -57,10 +57,15 @@ document.querySelectorAll('.skill-card').forEach(card => {
     });
 });
 
-// Discord Copy Funktion
+//copy discord name
 function copyDiscord() {
     const discordName = "1st | Firstmine";
     navigator.clipboard.writeText(discordName).then(() => {
-        alert("Discord-Name \"" + discordName + "\" wurde kopiert!");
+        const toast = document.getElementById("copy-notification");
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2500);
     });
 }
