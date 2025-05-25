@@ -270,6 +270,12 @@ nav {
     font-weight: bold;
 }
 
+.project-ferienhaus-anker {
+    all: unset;
+    cursor: pointer;
+    display: block;
+}
+
 /* Contact Section */
 .contact {
     padding: 100px 0;
