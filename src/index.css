@@ -270,10 +270,12 @@ nav {
     font-weight: bold;
 }
 
-.project-ferienhaus-anker {
-    all: unset;
-    cursor: pointer;
+.card-link {
     display: block;
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+    width: 100%;
 }
 
 /* Contact Section */
