@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albion Online Resell Gewinn Rechner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+ 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+ 
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 700px;
+            overflow: hidden;
+        }
+ 
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+ 
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+ 
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .stats-container {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .stat-box {
+            padding: 10px;
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-box:last-child {
+            border-right: none;
+        }
+
+        .stat-box h3 {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+
+        .stat-box p {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+ 
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            flex-wrap: wrap;
+        }
+ 
+        .tab {
+            flex: 1;
+            min-width: 100px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            font-size: 1em;
+        }
+ 
+        .tab.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+ 
+        .tab:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        .tab .badge {
+            background: #dc3545;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
+ 
+        .tab-content {
+            padding: 30px;
+            background: white;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+ 
+        .input-group {
+            margin-bottom: 20px;
+        }
+ 
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1em;
+        }
+ 
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+ 
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+ 
+        .calculate-btn, .confirm-btn, .finalize-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .finalize-btn {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            padding: 10px 20px;
+            width: auto;
+            margin: 0 5px;
+            font-size: 0.9em;
+        }
+ 
+        .calculate-btn:hover, .confirm-btn:hover, .finalize-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+ 
+        .result {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+ 
+        .result h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+ 
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+ 
+        .result-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #667eea;
+        }
+ 
+        .result-item.profit {
+            color: #28a745;
+        }
+ 
+        .result-item.loss {
+            color: #dc3545;
+        }
+ 
+        .premium-badge {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .trade-item, .pending-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .pending-item {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+        }
+
+        .trade-item:hover, .pending-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .trade-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .trade-profit {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .trade-profit.positive {
+            color: #28a745;
+        }
+
+        .trade-profit.negative {
+            color: #dc3545;
+        }
+
+        .profit-percentage {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-left: 10px;
+        }
+
+        .filter-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+
+        .no-trades {
+            text-align: center;
+            color: #6c757d;
+            padding: 40px;
+            font-size: 1.1em;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+ 
+        .hidden {
+            display: none;
+        }
+ 
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+            }
+ 
+            .header h1 {
+                font-size: 1.8em;
+            }
+ 
+            .tab-content {
+                padding: 20px;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .stat-box {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                padding: 8px;
+            }
+
+            .stat-box:last-child {
+                border-bottom: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏰 Albion Online</h1>
+            <p>Resell Gewinn Rechner</p>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-box">
+                <h3>💰 Gesamtgewinn</h3>
+                <p id="totalProfitDisplay">0 Münzen</p>
+            </div>
+            <div class="stat-box">
+                <h3>📊 Ø Gewinn/Trade</h3>
+                <p id="avgProfitDisplay">0 Münzen</p>
+            </div>
+            <div class="stat-box">
+                <h3>📈 Ø Gewinn %</h3>
+                <p id="avgPercentDisplay">0%</p>
+            </div>
+        </div>
+ 
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('normal')">Normal</button>
+            <button class="tab" onclick="switchTab('premium')">Premium <span class="premium-badge">👑</span></button>
+            <button class="tab" onclick="switchTab('pending')">⏳ Ausstehend <span class="badge" id="pendingBadge" style="display: none;">0</span></button>
+            <button class="tab" onclick="switchTab('trades')">📊 Abgeschlossen</button>
+        </div>
+ 
+        <div class="tab-content">
+            <div id="normal-tab">
+                <div id="successMessage" class="success-message hidden"></div>
+                
+                <div class="input-group">
+                    <label for="itemName">Item Name</label>
+                    <input type="text" id="itemName" placeholder="z.B. Eisen T4">
+                </div>
+
+                <div class="input-group">
+                    <label for="buyPrice">Kaufpreis (pro Einheit)</label>
+                    <input type="number" id="buyPrice" placeholder="z.B. 100" min="0" step="0.01">
+                </div>
+ 
+                <div class="input-group">
+                    <label for="quantity">Menge</label>
+                    <input type="number" id="quantity" placeholder="z.B. 1" min="1" step="1">
+                </div>
+ 
+                <div class="input-group">
+                    <label for="sellPrice">Verkaufspreis (pro Einheit)</label>
+                    <input type="number" id="sellPrice" placeholder="z.B. 150" min="0" step="0.01">
+                </div>
+ 
+                <button class="calculate-btn" onclick="calculateProfit('normal')">
+                    💰 Gewinn berechnen
+                </button>
+ 
+                <div id="result-normal" class="result hidden">
+                    <h3>📊 Berechnung (Normal)</h3>
+                    <div class="result-item">
+                        <span>Gesamtkaufpreis:</span>
+                        <span id="totalBuyPrice">0 Münzen</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Kauforder Gebühr (2.5%):</span>
+                        <span id="buyFee">0 Münzen</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Gesamtverkaufspreis:</span>
+                        <span id="totalSellPrice">0 Münzen</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Verkaufsorder Gebühr (2.5%):</span>
+                        <span id="sellFee">0 Münzen</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Steuern (8%):</span>
+                        <span id="taxes">0 Münzen</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Gesamtkosten:</span>
+                        <span id="totalCosts">0 Münzen</span>
+                    </div>
+                    <div class="result-item profit">
+                        <span><strong>💎 Netto Gewinn:</strong></span>
+                        <span id="netProfit"><strong>0 Münzen</strong></span>
+                    </div>
+                    <div class="result-item profit">
+                        <span><strong>📈 Gewinn %:</strong></span>
+                        <span id="profitPercent"><strong>0%</strong></span>
+                    </div>
+                    <button class="confirm-btn" onclick="confirmTrade('normal')">
+                        ✅ Trade beginnen (Kauforder läuft)
+                    </button>
+                </div>
+            </div>
+ 
+            <div id="premium-tab" class="hidden">
+                <div id="successMessagePremium" class="success-message hidden"></div>
+                
+                <div class="input-group">
+                    <label for="itemNamePremium">Item Name</label>
+                    <input type="text" id="itemNamePremium" placeholder="z.B. Eisen T4">
+                </div>
+
+                <div class="input-group">
+                    <label for="buyPricePremium">Kaufpreis (pro Einheit)</label>
+                    <input type="number" id="buyPricePremium" placeholder="z.B. 100" min="0" step="0.01">
+                </div>
+ 
+                <div class="input-group">
+                    <label for="quantityPremium">Menge</label>
+                    <input type="number" id="quantityPremium" placeholder="z.B. 1" min="1" step="1">
+                </div>
+ 
+                <div class="input-group">
+                    <label for="sellPricePremium">Verkaufspreis (pro Einheit)</label>
+                    <input type="number" id="sellPricePremium" placeholder="z.B. 150" min="0" step="0.01">
+                </div>
+ 
+                <button class="calculate-btn" onclick="calculateProfit('premium')">
+                    👑 Premium Gewinn berechnen
+                </button>
+ 
+                <div id="result-premium" class="result hidden">
+                    <h3>📊 Berechnung (Premium) 👑</h3>
+                    <div class="result-item">
+                        <span>Gesamtkaufpreis:</span>
+                        <span id="totalBuyPricePremium">0 Münzen</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Kauforder Gebühr (1.5%):</span>
+                        <span id="buyFeePremium">0 Münzen</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Gesamtverkaufspreis:</span>
+                        <span id="totalSellPricePremium">0 Münzen</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Verkaufsorder Gebühr (1.5%):</span>
+                        <span id="sellFeePremium">0 Münzen</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Steuern (4%):</span>
+                        <span id="taxesPremium">0 Münzen</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Gesamtkosten:</span>
+                        <span id="totalCostsPremium">0 Münzen</span>
+                    </div>
+                    <div class="result-item profit">
+                        <span><strong>💎 Netto Gewinn:</strong></span>
+                        <span id="netProfitPremium"><strong>0 Münzen</strong></span>
+                    </div>
+                    <div class="result-item profit">
+                        <span><strong>📈 Gewinn %:</strong></span>
+                        <span id="profitPercentPremium"><strong>0%</strong></span>
+                    </div>
+                    <button class="confirm-btn" onclick="confirmTrade('premium')">
+                        ✅ Trade beginnen (Kauforder läuft)
+                    </button>
+                </div>
+            </div>
+
+            <div id="pending-tab" class="hidden">
+                <div id="pendingContainer">
+                    <div class="no-trades">Keine ausstehenden Trades</div>
+                </div>
+            </div>
+
+            <div id="trades-tab" class="hidden">
+                <input type="text" class="filter-input" id="filterInput" placeholder="🔍 Nach Item oder Tier filtern (z.B. Eisen, T4)..." onkeyup="filterTrades()">
+                <div id="tradesContainer">
+                    <div class="no-trades">Noch keine abgeschlossenen Trades</div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <script>
+        // Lokale Speicherung initialisieren
+        let trades = JSON.parse(localStorage.getItem('albionTrades')) || [];
+        let pendingTrades = JSON.parse(localStorage.getItem('albionPendingTrades')) || [];
+        let currentCalculation = null;
+
+        // Beim Laden der Seite
+        window.onload = function() {
+            updateStats();
+            displayTrades();
+            displayPendingTrades();
+            updatePendingBadge();
+        };
+
+        function switchTab(tabName) {
+            // Tab-Buttons aktualisieren
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+ 
+            // Tab-Inhalte anzeigen/verstecken
+            const normalTab = document.getElementById('normal-tab');
+            const premiumTab = document.getElementById('premium-tab');
+            const pendingTab = document.getElementById('pending-tab');
+            const tradesTab = document.getElementById('trades-tab');
+ 
+            normalTab.classList.add('hidden');
+            premiumTab.classList.add('hidden');
+            pendingTab.classList.add('hidden');
+            tradesTab.classList.add('hidden');
+
+            if (tabName === 'normal') {
+                normalTab.classList.remove('hidden');
+            } else if (tabName === 'premium') {
+                premiumTab.classList.remove('hidden');
+            } else if (tabName === 'pending') {
+                pendingTab.classList.remove('hidden');
+                displayPendingTrades();
+            } else if (tabName === 'trades') {
+                tradesTab.classList.remove('hidden');
+                displayTrades();
+            }
+        }
+ 
+        function calculateProfit(type) {
+            let buyPrice, quantity, sellPrice, itemName;
+ 
+            if (type === 'normal') {
+                itemName = document.getElementById('itemName').value || 'Unbenanntes Item';
+                buyPrice = parseFloat(document.getElementById('buyPrice').value) || 0;
+                quantity = parseInt(document.getElementById('quantity').value) || 0;
+                sellPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
+            } else {
+                itemName = document.getElementById('itemNamePremium').value || 'Unbenanntes Item';
+                buyPrice = parseFloat(document.getElementById('buyPricePremium').value) || 0;
+                quantity = parseInt(document.getElementById('quantityPremium').value) || 0;
+                sellPrice = parseFloat(document.getElementById('sellPricePremium').value) || 0;
+            }
+ 
+            if (buyPrice <= 0 || quantity <= 0 || sellPrice <= 0) {
+                return;
+            }
+ 
+            // Gebühren und Steuern je nach Typ
+            const buyFeeRate = type === 'premium' ? 0.015 : 0.025;
+            const sellFeeRate = type === 'premium' ? 0.015 : 0.025;
+            const taxRate = type === 'premium' ? 0.04 : 0.08;
+ 
+            // Berechnungen
+            const totalBuyPrice = buyPrice * quantity;
+            const totalSellPrice = sellPrice * quantity;
+ 
+            // Gebühren (immer aufrunden)
+            const buyFee = Math.ceil(totalBuyPrice * buyFeeRate);
+            const sellFee = Math.ceil(totalSellPrice * sellFeeRate);
+            const taxes = Math.ceil(totalSellPrice * taxRate);
+ 
+            // Gesamtkosten
+            const totalCosts = totalBuyPrice + buyFee + sellFee + taxes;
+ 
+            // Netto Gewinn
+            const netProfit = totalSellPrice - totalCosts;
+            const profitPercent = ((netProfit / totalCosts) * 100).toFixed(2);
+
+            // Aktuelle Berechnung speichern
+            currentCalculation = {
+                itemName: itemName,
+                buyPrice: buyPrice,
+                quantity: quantity,
+                sellPrice: sellPrice,
+                totalBuyPrice: totalBuyPrice,
+                totalSellPrice: totalSellPrice,
+                buyFee: buyFee,
+                sellFee: sellFee,
+                taxes: taxes,
+                totalCosts: totalCosts,
+                netProfit: netProfit,
+                profitPercent: profitPercent,
+                type: type,
+                date: new Date().toISOString()
+            };
+ 
+            // Ergebnisse anzeigen
+            const suffix = type === 'premium' ? 'Premium' : '';
+            document.getElementById(`totalBuyPrice${suffix}`).textContent = `${totalBuyPrice.toLocaleString()} Münzen`;
+            document.getElementById(`buyFee${suffix}`).textContent = `${buyFee.toLocaleString()} Münzen`;
+            document.getElementById(`totalSellPrice${suffix}`).textContent = `${totalSellPrice.toLocaleString()} Münzen`;
+            document.getElementById(`sellFee${suffix}`).textContent = `${sellFee.toLocaleString()} Münzen`;
+            document.getElementById(`taxes${suffix}`).textContent = `${taxes.toLocaleString()} Münzen`;
+            document.getElementById(`totalCosts${suffix}`).textContent = `${totalCosts.toLocaleString()} Münzen`;
+            document.getElementById(`netProfit${suffix}`).textContent = `${netProfit.toLocaleString()} Münzen`;
+            document.getElementById(`profitPercent${suffix}`).textContent = `${profitPercent}%`;
+ 
+            // Gewinn/Verlust Farbe
+            const profitElement = document.getElementById(`netProfit${suffix}`).parentElement;
+            const percentElement = document.getElementById(`profitPercent${suffix}`).parentElement;
+            if (netProfit > 0) {
+                profitElement.classList.remove('loss');
+                profitElement.classList.add('profit');
+                percentElement.classList.remove('loss');
+                percentElement.classList.add('profit');
+            } else {
+                profitElement.classList.remove('profit');
+                profitElement.classList.add('loss');
+                percentElement.classList.remove('profit');
+                percentElement.classList.add('loss');
+            }
+ 
+            // Ergebnis anzeigen
+            document.getElementById(`result-${type}`).classList.remove('hidden');
+        }
+
+        function confirmTrade(type) {
+            if (!currentCalculation) {
+                return;
+            }
+
+            // Trade zu ausstehend hinzufügen
+            pendingTrades.push(currentCalculation);
+            localStorage.setItem('albionPendingTrades', JSON.stringify(pendingTrades));
+
+            // Success Message anzeigen
+            showSuccessMessage(type, 'Trade wurde zu ausstehenden Trades hinzugefügt! 🚀');
+
+            // Eingabefelder leeren
+            if (type === 'normal') {
+                document.getElementById('itemName').value = '';
+                document.getElementById('buyPrice').value = '';
+                document.getElementById('quantity').value = '';
+                document.getElementById('sellPrice').value = '';
+            } else {
+                document.getElementById('itemNamePremium').value = '';
+                document.getElementById('buyPricePremium').value = '';
+                document.getElementById('quantityPremium').value = '';
+                document.getElementById('sellPricePremium').value = '';
+            }
+
+            // Ergebnis ausblenden
+            document.getElementById(`result-${type}`).classList.add('hidden');
+            currentCalculation = null;
+
+            // Badge updaten
+            updatePendingBadge();
+        }
+
+        function showSuccessMessage(type, message) {
+            const suffix = type === 'premium' ? 'Premium' : '';
+            const msgElement = document.getElementById(`successMessage${suffix}`);
+            msgElement.textContent = message;
+            msgElement.classList.remove('hidden');
+            
+            setTimeout(() => {
+                msgElement.classList.add('hidden');
+            }, 3000);
+        }
+
+        function updateStats() {
+            const totalProfit = trades.reduce((sum, trade) => sum + trade.netProfit, 0);
+            const avgProfit = trades.length > 0 ? totalProfit / trades.length : 0;
+            const avgPercent = trades.length > 0 
+                ? trades.reduce((sum, trade) => sum + parseFloat(trade.profitPercent), 0) / trades.length 
+                : 0;
+
+            document.getElementById('totalProfitDisplay').textContent = `${totalProfit.toLocaleString()} Münzen`;
+            document.getElementById('avgProfitDisplay').textContent = `${Math.round(avgProfit).toLocaleString()} Münzen`;
+            document.getElementById('avgPercentDisplay').textContent = `${avgPercent.toFixed(2)}%`;
+        }
+
+        function updatePendingBadge() {
+            const badge = document.getElementById('pendingBadge');
+            if (pendingTrades.length > 0) {
+                badge.textContent = pendingTrades.length;
+                badge.style.display = 'inline';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function displayPendingTrades() {
+            const container = document.getElementById('pendingContainer');
+
+            if (pendingTrades.length === 0) {
+                container.innerHTML = '<div class="no-trades">Keine ausstehenden Trades</div>';
+                return;
+            }
+
+            container.innerHTML = pendingTrades.map((trade, index) => {
+                const date = new Date(trade.date).toLocaleString('de-DE');
+                const profitClass = trade.netProfit > 0 ? 'positive' : 'negative';
+                const isPremium = trade.type === 'premium';
+
+                return `
+                    <div class="pending-item">
+                        <div class="trade-info">
+                            <div>
+                                <strong>${trade.itemName}</strong> ${isPremium ? '<span class="premium-badge">👑</span>' : ''}
+                                <br>
+                                <small>Gestartet: ${date}</small>
+                            </div>
+                            <div>
+                                <button class="finalize-btn" onclick="finalizeTrade(${index}, ${trade.sellPrice})">
+                                    ✅ Abschließen
+                                </button>
+                                <button class="delete-btn" onclick="deletePendingTrade(${index})">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                        <div class="trade-info">
+                            <div>
+                                <small>Menge: ${trade.quantity} | Kauf: ${trade.buyPrice} | Geplanter VK: ${trade.sellPrice}</small>
+                            </div>
+                            <div class="trade-profit ${profitClass}">
+                                ${trade.netProfit > 0 ? '+' : ''}${trade.netProfit.toLocaleString()} Münzen
+                                <span class="profit-percentage">(${trade.profitPercent}%)</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <label style="font-size: 0.9em;">Tatsächlicher Verkaufspreis:</label>
+                            <input type="number" id="finalPrice-${index}" value="${trade.sellPrice}" 
+                                   style="width: 150px; padding: 5px; margin-right: 10px;">
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function finalizeTrade(index, defaultPrice) {
+            const finalPriceInput = document.getElementById(`finalPrice-${index}`);
+            const finalPrice = parseFloat(finalPriceInput.value) || defaultPrice;
+            
+            let trade = pendingTrades[index];
+            
+            // Neu berechnen mit tatsächlichem Verkaufspreis
+            const totalSellPrice = finalPrice * trade.quantity;
+            const sellFee = Math.ceil(totalSellPrice * (trade.type === 'premium' ? 0.015 : 0.025));
+            const taxes = Math.ceil(totalSellPrice * (trade.type === 'premium' ? 0.04 : 0.08));
+            const totalCosts = trade.totalBuyPrice + trade.buyFee + sellFee + taxes;
+            const netProfit = totalSellPrice - totalCosts;
+            const profitPercent = ((netProfit / totalCosts) * 100).toFixed(2);
+            
+            // Trade aktualisieren
+            trade.sellPrice = finalPrice;
+            trade.totalSellPrice = totalSellPrice;
+            trade.sellFee = sellFee;
+            trade.taxes = taxes;
+            trade.totalCosts = totalCosts;
+            trade.netProfit = netProfit;
+            trade.profitPercent = profitPercent;
+            trade.finalizedDate = new Date().toISOString();
+            
+            // Zu abgeschlossenen Trades hinzufügen
+            trades.push(trade);
+            pendingTrades.splice(index, 1);
+            
+            // Speichern
+            localStorage.setItem('albionTrades', JSON.stringify(trades));
+            localStorage.setItem('albionPendingTrades', JSON.stringify(pendingTrades));
+            
+            // UI updaten
+            updateStats();
+            displayPendingTrades();
+            updatePendingBadge();
+        }
+
+        function deletePendingTrade(index) {
+            if (confirm('Möchtest du diesen ausstehenden Trade wirklich löschen?')) {
+                pendingTrades.splice(index, 1);
+                localStorage.setItem('albionPendingTrades', JSON.stringify(pendingTrades));
+                displayPendingTrades();
+                updatePendingBadge();
+            }
+        }
+
+        function displayTrades() {
+            const container = document.getElementById('tradesContainer');
+            const filterValue = document.getElementById('filterInput').value.toLowerCase();
+
+            if (trades.length === 0) {
+                container.innerHTML = '<div class="no-trades">Noch keine abgeschlossenen Trades</div>';
+                return;
+            }
+
+            const filteredTrades = trades.filter(trade => {
+                return trade.itemName.toLowerCase().includes(filterValue);
+            });
+
+            if (filteredTrades.length === 0) {
+                container.innerHTML = '<div class="no-trades">Keine Trades gefunden</div>';
+                return;
+            }
+
+            container.innerHTML = filteredTrades.map((trade, index) => {
+                const date = new Date(trade.finalizedDate || trade.date).toLocaleString('de-DE');
+                const profitClass = trade.netProfit > 0 ? 'positive' : 'negative';
+                const isPremium = trade.type === 'premium';
+
+                return `
+                    <div class="trade-item">
+                        <div class="trade-info">
+                            <div>
+                                <strong>${trade.itemName}</strong> ${isPremium ? '<span class="premium-badge">👑</span>' : ''}
+                                <br>
+                                <small>${date}</small>
+                            </div>
+                            <button class="delete-btn" onclick="deleteTrade(${trades.indexOf(trade)})">🗑️</button>
+                        </div>
+                        <div class="trade-info">
+                            <div>
+                                <small>Menge: ${trade.quantity} | Kauf: ${trade.buyPrice} | Verkauf: ${trade.sellPrice}</small>
+                            </div>
+                            <div class="trade-profit ${profitClass}">
+                                ${trade.netProfit > 0 ? '+' : ''}${trade.netProfit.toLocaleString()} Münzen
+                                <span class="profit-percentage">(${trade.profitPercent}%)</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterTrades() {
+            displayTrades();
+        }
+
+        function deleteTrade(index) {
+            if (confirm('Möchtest du diesen Trade wirklich löschen?')) {
+                trades.splice(index, 1);
+                localStorage.setItem('albionTrades', JSON.stringify(trades));
+                updateStats();
+                displayTrades();
+            }
+        }
+ 
+        // Enter-Taste für Berechnung
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const activeTab = document.querySelector('.tab.active').textContent;
+                if (activeTab.includes('Premium')) {
+                    calculateProfit('premium');
+                } else if (activeTab.includes('Normal')) {
+                    calculateProfit('normal');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
