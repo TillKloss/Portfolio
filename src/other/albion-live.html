@@ -324,32 +324,142 @@
             display: none;
         }
  
+        .goal-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .goal-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .goal-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .goal-type {
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+
+        .goal-progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .goal-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .goal-progress-fill.exceeded {
+            background: linear-gradient(90deg, #ffc107, #ff9800);
+        }
+
+        .goal-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+
+        .goal-form {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .goal-form h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .add-goal-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-goal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .delete-goal-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            cursor: pointer;
+        }
+
+        .active-goals-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .active-goals-header h3 {
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .toggle-form-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
         @media (max-width: 600px) {
-            .container {
-                margin: 10px;
-            }
- 
-            .header h1 {
-                font-size: 1.8em;
-            }
- 
-            .tab-content {
-                padding: 20px;
-            }
-
-            .stats-container {
+            .form-row {
                 grid-template-columns: 1fr;
-                gap: 5px;
-            }
-
-            .stat-box {
-                border-right: none;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-                padding: 8px;
-            }
-
-            .stat-box:last-child {
-                border-bottom: none;
             }
         }
     </style>
@@ -381,6 +491,7 @@
             <button class="tab" onclick="switchTab('premium')">Premium <span class="premium-badge">👑</span></button>
             <button class="tab" onclick="switchTab('pending')">⏳ Ausstehend <span class="badge" id="pendingBadge" style="display: none;">0</span></button>
             <button class="tab" onclick="switchTab('trades')">📊 Abgeschlossen</button>
+            <button class="tab" onclick="switchTab('goals')">🎯 Ziele</button>
         </div>
  
         <div class="tab-content">
@@ -530,6 +641,51 @@
                     <div class="no-trades">Noch keine abgeschlossenen Trades</div>
                 </div>
             </div>
+
+            <div id="goals-tab" class="hidden">
+                <div id="goalForm" class="goal-form">
+                    <h3>🎯 Neues Ziel erstellen</h3>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="goalName">Zielname</label>
+                            <input type="text" id="goalName" placeholder="z.B. Wochenziel KW 26">
+                        </div>
+                        <div class="input-group">
+                            <label for="goalType">Zeitraum</label>
+                            <select id="goalType">
+                                <option value="daily">Täglich</option>
+                                <option value="weekly">Wöchentlich</option>
+                                <option value="monthly">Monatlich</option>
+                                <option value="custom">Benutzerdefiniert</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="goalAmount">Ziel-Gewinn (Münzen)</label>
+                            <input type="number" id="goalAmount" placeholder="z.B. 1000000" min="0">
+                        </div>
+                        <div class="input-group" id="customDateGroup" style="display: none;">
+                            <label for="goalEndDate">Enddatum</label>
+                            <input type="datetime-local" id="goalEndDate">
+                        </div>
+                    </div>
+                    <button class="add-goal-btn" onclick="addGoal()">
+                        ➕ Ziel hinzufügen
+                    </button>
+                </div>
+
+                <div class="active-goals-header">
+                    <h3>📊 Aktive Ziele</h3>
+                    <button class="toggle-form-btn" onclick="toggleGoalForm()">
+                        ➕ Neues Ziel
+                    </button>
+                </div>
+                
+                <div id="goalsContainer">
+                    <div class="no-trades">Noch keine Ziele erstellt</div>
+                </div>
+            </div>
         </div>
     </div>
  
@@ -537,6 +693,7 @@
         // Lokale Speicherung initialisieren
         let trades = JSON.parse(localStorage.getItem('albionTrades')) || [];
         let pendingTrades = JSON.parse(localStorage.getItem('albionPendingTrades')) || [];
+        let goals = JSON.parse(localStorage.getItem('albionGoals')) || [];
         let currentCalculation = null;
 
         // Beim Laden der Seite
@@ -545,7 +702,25 @@
             displayTrades();
             displayPendingTrades();
             updatePendingBadge();
+            displayGoals();
+            setupGoalTypeListener();
         };
+
+        function setupGoalTypeListener() {
+            document.getElementById('goalType').addEventListener('change', function() {
+                const customDateGroup = document.getElementById('customDateGroup');
+                if (this.value === 'custom') {
+                    customDateGroup.style.display = 'block';
+                } else {
+                    customDateGroup.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleGoalForm() {
+            const form = document.getElementById('goalForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
 
         function switchTab(tabName) {
             // Tab-Buttons aktualisieren
@@ -558,11 +733,13 @@
             const premiumTab = document.getElementById('premium-tab');
             const pendingTab = document.getElementById('pending-tab');
             const tradesTab = document.getElementById('trades-tab');
+            const goalsTab = document.getElementById('goals-tab');
  
             normalTab.classList.add('hidden');
             premiumTab.classList.add('hidden');
             pendingTab.classList.add('hidden');
             tradesTab.classList.add('hidden');
+            goalsTab.classList.add('hidden');
 
             if (tabName === 'normal') {
                 normalTab.classList.remove('hidden');
@@ -574,6 +751,9 @@
             } else if (tabName === 'trades') {
                 tradesTab.classList.remove('hidden');
                 displayTrades();
+            } else if (tabName === 'goals') {
+                goalsTab.classList.remove('hidden');
+                displayGoals();
             }
         }
  
@@ -886,6 +1066,160 @@
                 displayTrades();
             }
         }
+
+        function addGoal() {
+            const name = document.getElementById('goalName').value;
+            const type = document.getElementById('goalType').value;
+            const amount = parseFloat(document.getElementById('goalAmount').value);
+            const endDate = document.getElementById('goalEndDate').value;
+
+            if (!name || !amount || amount <= 0) {
+                return;
+            }
+
+            let startDate = new Date();
+            let goalEndDate = new Date();
+
+            switch(type) {
+                case 'daily':
+                    goalEndDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'weekly':
+                    const daysUntilSunday = 7 - startDate.getDay();
+                    goalEndDate.setDate(startDate.getDate() + daysUntilSunday);
+                    goalEndDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'monthly':
+                    goalEndDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+                    goalEndDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'custom':
+                    if (!endDate) return;
+                    goalEndDate = new Date(endDate);
+                    break;
+            }
+
+            const goal = {
+                id: Date.now(),
+                name: name,
+                type: type,
+                amount: amount,
+                startDate: startDate.toISOString(),
+                endDate: goalEndDate.toISOString(),
+                createdAt: new Date().toISOString()
+            };
+
+            goals.push(goal);
+            localStorage.setItem('albionGoals', JSON.stringify(goals));
+
+            // Form zurücksetzen
+            document.getElementById('goalName').value = '';
+            document.getElementById('goalAmount').value = '';
+            document.getElementById('goalEndDate').value = '';
+            document.getElementById('goalType').value = 'daily';
+
+            displayGoals();
+            showSuccessMessage('goals', 'Ziel erfolgreich erstellt! 🎯');
+        }
+
+        function getGoalProgress(goal) {
+            const startDate = new Date(goal.startDate);
+            const endDate = new Date(goal.endDate);
+            
+            // Nur Trades im Zielzeitraum zählen
+            const relevantTrades = trades.filter(trade => {
+                const tradeDate = new Date(trade.finalizedDate || trade.date);
+                return tradeDate >= startDate && tradeDate <= endDate;
+            });
+
+            const totalProfit = relevantTrades.reduce((sum, trade) => sum + trade.netProfit, 0);
+            const percentage = Math.min((totalProfit / goal.amount) * 100, 999);
+
+            return {
+                current: totalProfit,
+                percentage: percentage,
+                remaining: Math.max(0, goal.amount - totalProfit)
+            };
+        }
+
+        function displayGoals() {
+            const container = document.getElementById('goalsContainer');
+            
+            if (goals.length === 0) {
+                container.innerHTML = '<div class="no-trades">Noch keine Ziele erstellt</div>';
+                return;
+            }
+
+            // Aktive und abgelaufene Ziele trennen
+            const now = new Date();
+            const activeGoals = goals.filter(goal => new Date(goal.endDate) > now);
+            const expiredGoals = goals.filter(goal => new Date(goal.endDate) <= now);
+
+            let html = '';
+
+            if (activeGoals.length > 0) {
+                html += activeGoals.map(goal => {
+                    const progress = getGoalProgress(goal);
+                    const endDate = new Date(goal.endDate);
+                    const timeRemaining = getTimeRemaining(endDate);
+                    const progressClass = progress.percentage >= 100 ? 'exceeded' : '';
+
+                    return `
+                        <div class="goal-item">
+                            <div class="goal-header">
+                                <div>
+                                    <div class="goal-title">${goal.name}</div>
+                                    <span class="goal-type">${getGoalTypeLabel(goal.type)}</span>
+                                </div>
+                                <button class="delete-goal-btn" onclick="deleteGoal(${goal.id})">🗑️</button>
+                            </div>
+                            <div class="goal-progress-bar">
+                                <div class="goal-progress-fill ${progressClass}" style="width: ${Math.min(progress.percentage, 100)}%">
+                                    ${progress.percentage.toFixed(1)}%
+                                </div>
+                            </div>
+                            <div class="goal-stats">
+                                <span>${progress.current.toLocaleString()} / ${goal.amount.toLocaleString()} Münzen</span>
+                                <span>${timeRemaining}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            container.innerHTML = html || '<div class="no-trades">Keine aktiven Ziele</div>';
+        }
+
+        function getGoalTypeLabel(type) {
+            const labels = {
+                'daily': 'Täglich',
+                'weekly': 'Wöchentlich',
+                'monthly': 'Monatlich',
+                'custom': 'Benutzerdefiniert'
+            };
+            return labels[type] || type;
+        }
+
+        function getTimeRemaining(endDate) {
+            const now = new Date();
+            const diff = endDate - now;
+            
+            if (diff <= 0) return 'Abgelaufen';
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            if (days > 0) return `${days} Tag${days !== 1 ? 'e' : ''} verbleibend`;
+            return `${hours} Stunde${hours !== 1 ? 'n' : ''} verbleibend`;
+        }
+
+        function deleteGoal(goalId) {
+            if (confirm('Möchtest du dieses Ziel wirklich löschen?')) {
+                goals = goals.filter(goal => goal.id !== goalId);
+                localStorage.setItem('albionGoals', JSON.stringify(goals));
+                displayGoals();
+            }
+        }
  
         // Enter-Taste für Berechnung
         document.addEventListener('keypress', function(e) {
@@ -895,6 +1229,8 @@
                     calculateProfit('premium');
                 } else if (activeTab.includes('Normal')) {
                     calculateProfit('normal');
+                } else if (activeTab.includes('Ziele')) {
+                    addGoal();
                 }
             }
         });
