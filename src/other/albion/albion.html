@@ -706,6 +706,14 @@
             setupGoalTypeListener();
         };
 
+        function getRiskClass(roi) {
+            if (roi < 13) return { color: '#8B0000', label: 'Kritisch' };          // Dunkelrot
+            if (roi < 21) return { color: '#dc3545', label: 'Schlecht' };         // Rot
+            if (roi < 30) return { color: '#fd7e14', label: 'Akzeptabel' };       // Orange
+            if (roi < 40) return { color: '#28a745', label: 'Gut' };              // Grün
+            return { color: '#90ee90', label: 'Sehr gut' };                       // Hellgrün
+        }
+
         function setupGoalTypeListener() {
             document.getElementById('goalType').addEventListener('change', function() {
                 const customDateGroup = document.getElementById('customDateGroup');
@@ -814,7 +822,24 @@
                 type: type,
                 date: new Date().toISOString()
             };
- 
+
+            // ROI-Risikoanalyse
+            const risk = getRiskClass(profitPercent);
+            const resultBox = document.getElementById(`result-${type}`);
+            resultBox.style.background = risk.color;
+
+            // Risiko-Text anzeigen oder erstellen
+            let riskTextEl = document.getElementById(`riskText-${type}`);
+            if (!riskTextEl) {
+                riskTextEl = document.createElement('div');
+                riskTextEl.id = `riskText-${type}`;
+                riskTextEl.style.fontWeight = 'bold';
+                riskTextEl.style.marginTop = '10px';
+                riskTextEl.style.fontSize = '1em';
+                resultBox.appendChild(riskTextEl);
+            }
+            riskTextEl.textContent = `⚠️ Risiko: ${risk.label}`;
+
             // Ergebnisse anzeigen
             const suffix = type === 'premium' ? 'Premium' : '';
             document.getElementById(`totalBuyPrice${suffix}`).textContent = `${totalBuyPrice.toLocaleString()} Münzen`;
@@ -825,7 +850,8 @@
             document.getElementById(`totalCosts${suffix}`).textContent = `${totalCosts.toLocaleString()} Münzen`;
             document.getElementById(`netProfit${suffix}`).textContent = `${netProfit.toLocaleString()} Münzen`;
             document.getElementById(`profitPercent${suffix}`).textContent = `${profitPercent}%`;
- 
+            document.getElementById(`result-${type}`).classList.remove('hidden');
+
             // Gewinn/Verlust Farbe
             const profitElement = document.getElementById(`netProfit${suffix}`).parentElement;
             const percentElement = document.getElementById(`profitPercent${suffix}`).parentElement;
@@ -973,7 +999,7 @@
             const totalCosts = trade.totalBuyPrice + trade.buyFee + sellFee + taxes;
             const netProfit = totalSellPrice - totalCosts;
             const profitPercent = ((netProfit / totalCosts) * 100).toFixed(2);
-            
+
             // Trade aktualisieren
             trade.sellPrice = finalPrice;
             trade.totalSellPrice = totalSellPrice;
