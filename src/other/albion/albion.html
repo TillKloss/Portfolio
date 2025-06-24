@@ -10,58 +10,60 @@
             padding: 0;
             box-sizing: border-box;
         }
- 
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #e0f7fa 0%, #f3e5f5 100%); /* zartes Cyan → Flieder */
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
- 
+
         .container {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(109, 95, 175, 0.15); /* sanfter violetter Schatten */
             width: 100%;
             max-width: 700px;
             overflow: hidden;
         }
- 
+
         .header {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            background: linear-gradient(135deg, #9c27b0, #7b1fa2); /* magisches Purpur */
             color: white;
             padding: 30px;
             text-align: center;
+            text-shadow: 0 2px 6px rgba(102, 0, 153, 0.6);
+            letter-spacing: 1.2px;
         }
- 
+
         .header h1 {
             font-size: 2.2em;
             margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
- 
+
         .header p {
             opacity: 0.9;
             font-size: 1.1em;
         }
 
         .stats-container {
-            background: linear-gradient(135deg, #28a745, #20c997);
+            background: linear-gradient(135deg, #4caf50, #81c784); /* Smaragdgrün */
             color: white;
             padding: 15px;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
             text-align: center;
+            box-shadow: 0 0 15px #4caf50aa;
         }
 
         .stat-box {
             padding: 10px;
-            border-right: 2px solid rgba(255, 255, 255, 0.2);
+            border-right: 2px solid rgba(255, 255, 255, 0.3);
         }
 
         .stat-box:last-child {
@@ -71,92 +73,104 @@
         .stat-box h3 {
             font-size: 0.9em;
             margin-bottom: 5px;
-            opacity: 0.9;
+            opacity: 0.85;
+            text-shadow: 0 0 3px #a5d6a7;
         }
 
         .stat-box p {
             font-size: 1.2em;
-            font-weight: bold;
+            font-weight: 700;
+            text-shadow: 0 0 5px #66bb6a;
         }
- 
+
         .tabs {
             display: flex;
-            background: #f8f9fa;
+            background: #f5f5f5;
             flex-wrap: wrap;
+            border-bottom: 2px solid #d1c4e9;
         }
- 
+
         .tab {
             flex: 1;
             min-width: 100px;
             padding: 15px 10px;
             text-align: center;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 700;
             transition: all 0.3s ease;
             border: none;
             background: transparent;
             font-size: 1em;
+            color: #6a1b9a;
         }
- 
+
         .tab.active {
             background: white;
-            color: #667eea;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            color: #9c27b0;
+            box-shadow: 0 -2px 10px rgba(156, 39, 176, 0.3);
+            border-bottom: 3px solid #7b1fa2;
         }
- 
+
         .tab:hover:not(.active) {
-            background: #e9ecef;
+            background: #ede7f6;
         }
 
         .tab .badge {
-            background: #dc3545;
+            background: #ab47bc;
             color: white;
             border-radius: 10px;
             padding: 2px 6px;
             font-size: 0.8em;
             margin-left: 5px;
         }
- 
+
         .tab-content {
             padding: 30px;
             background: white;
             max-height: 70vh;
             overflow-y: auto;
+            box-shadow: inset 0 0 10px #ce93d8;
+            border-radius: 0 0 20px 20px;
         }
- 
+
         .input-group {
             margin-bottom: 20px;
         }
- 
+
         .input-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #333;
+            color: #4a148c;
             font-size: 1em;
         }
- 
-        .input-group input, .input-group select {
+
+        .input-group input,
+        .input-group select {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e9ecef;
+            border: 2px solid #ce93d8;
             border-radius: 10px;
             font-size: 1em;
             transition: all 0.3s ease;
-            background: #f8f9fa;
+            background: #f9f7ff;
+            color: #4a148c;
         }
- 
-        .input-group input:focus, .input-group select:focus {
+
+        .input-group input:focus,
+        .input-group select:focus {
             outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #7b1fa2;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.15);
         }
- 
-        .calculate-btn, .confirm-btn, .finalize-btn {
+
+        .calculate-btn,
+        .confirm-btn,
+        .finalize-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #7b1fa2, #ab47bc);
             color: white;
             border: none;
             border-radius: 10px;
@@ -165,85 +179,97 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
         }
 
         .confirm-btn {
-            background: linear-gradient(135deg, #28a745, #20c997);
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
         }
 
         .finalize-btn {
-            background: linear-gradient(135deg, #ffc107, #ff9800);
+            background: linear-gradient(135deg, #fbc02d, #ffeb3b);
             padding: 10px 20px;
             width: auto;
             margin: 0 5px;
             font-size: 0.9em;
+            color: #5d4037;
+            box-shadow: 0 5px 15px rgba(251, 192, 45, 0.3);
         }
- 
-        .calculate-btn:hover, .confirm-btn:hover, .finalize-btn:hover {
+
+        .calculate-btn:hover,
+        .confirm-btn:hover,
+        .finalize-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 15px 25px rgba(156, 39, 176, 0.5);
         }
- 
+
         .result {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            background: linear-gradient(135deg, #f3e5f5, #ede7f6);
             border-radius: 15px;
             padding: 20px;
             margin-top: 20px;
+            box-shadow: 0 0 10px #ce93d8;
         }
- 
+
         .result h3 {
-            color: #333;
+            color: #4a148c;
             margin-bottom: 15px;
             font-size: 1.2em;
+            text-shadow: 0 0 3px #7b1fa2;
         }
- 
+
         .result-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 8px 0;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid #d1c4e9;
         }
- 
+
         .result-item:last-child {
             border-bottom: none;
             font-weight: bold;
             font-size: 1.1em;
-            color: #667eea;
+            color: #7b1fa2;
         }
- 
+
         .result-item.profit {
-            color: #28a745;
+            color: #43a047;
         }
- 
+
         .result-item.loss {
-            color: #dc3545;
+            color: #e53935;
         }
- 
+
         .premium-badge {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #333;
+            background: linear-gradient(135deg, #fdd835, #ffee58);
+            color: #5d4037;
             padding: 3px 8px;
             border-radius: 15px;
             font-size: 0.8em;
             font-weight: bold;
+            text-shadow: 0 0 2px #fbc02d;
         }
 
-        .trade-item, .pending-item {
-            background: #f8f9fa;
+        .trade-item,
+        .pending-item {
+            background: #fafafa;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 15px;
             transition: all 0.3s ease;
+            box-shadow: 0 0 8px #ce93d8;
         }
 
         .pending-item {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
+            background: #fff9c4;
+            border: 2px solid #fbc02d;
         }
 
-        .trade-item:hover, .pending-item:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        .trade-item:hover,
+        .pending-item:hover {
+            box-shadow: 0 8px 20px rgba(156, 39, 176, 0.3);
             transform: translateY(-2px);
         }
 
@@ -260,11 +286,11 @@
         }
 
         .trade-profit.positive {
-            color: #28a745;
+            color: #43a047;
         }
 
         .trade-profit.negative {
-            color: #dc3545;
+            color: #e53935;
         }
 
         .profit-percentage {
@@ -276,21 +302,22 @@
         .filter-input {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e9ecef;
+            border: 2px solid #ce93d8;
             border-radius: 10px;
             font-size: 1em;
             margin-bottom: 20px;
+            color: #4a148c;
         }
 
         .no-trades {
             text-align: center;
-            color: #6c757d;
+            color: #9c27b0;
             padding: 40px;
             font-size: 1.1em;
         }
 
         .delete-btn {
-            background: #dc3545;
+            background: #e53935;
             color: white;
             border: none;
             padding: 6px 12px;
@@ -301,13 +328,13 @@
         }
 
         .delete-btn:hover {
-            background: #c82333;
+            background: #b71c1c;
         }
 
         .success-message {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
+            background: #c8e6c9;
+            border: 1px solid #a5d6a7;
+            color: #1b5e20;
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -316,25 +343,33 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
- 
+
         .hidden {
             display: none;
         }
- 
+
         .goal-item {
-            background: #f8f9fa;
+            background: #fafafa;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 15px;
             transition: all 0.3s ease;
             position: relative;
+            box-shadow: 0 0 8px #ce93d8;
         }
 
         .goal-item:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(156, 39, 176, 0.3);
         }
 
         .goal-header {
@@ -347,11 +382,11 @@
         .goal-title {
             font-size: 1.1em;
             font-weight: bold;
-            color: #333;
+            color: #4a148c;
         }
 
         .goal-type {
-            background: #667eea;
+            background: #7b1fa2;
             color: white;
             padding: 5px 10px;
             border-radius: 15px;
@@ -369,7 +404,7 @@
 
         .goal-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #28a745, #20c997);
+            background: linear-gradient(90deg, #43a047, #66bb6a);
             transition: width 0.5s ease;
             display: flex;
             align-items: center;
@@ -380,7 +415,7 @@
         }
 
         .goal-progress-fill.exceeded {
-            background: linear-gradient(90deg, #ffc107, #ff9800);
+            background: linear-gradient(90deg, #fbc02d, #ff9800);
         }
 
         .goal-stats {
@@ -391,7 +426,7 @@
         }
 
         .goal-form {
-            background: #f8f9fa;
+            background: #f5f5f5;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
@@ -399,7 +434,7 @@
 
         .goal-form h3 {
             margin-bottom: 15px;
-            color: #333;
+            color: #4a148c;
         }
 
         .form-row {
@@ -410,7 +445,7 @@
         }
 
         .add-goal-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #7b1fa2, #ab47bc);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -422,11 +457,11 @@
 
         .add-goal-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
         }
 
         .delete-goal-btn {
-            background: #dc3545;
+            background: #e53935;
             color: white;
             border: none;
             padding: 5px 10px;
@@ -443,7 +478,7 @@
         }
 
         .active-goals-header h3 {
-            color: #333;
+            color: #4a148c;
             font-size: 1.2em;
         }
 
@@ -462,6 +497,7 @@
                 grid-template-columns: 1fr;
             }
         }
+
     </style>
 </head>
 <body>
